@@ -411,7 +411,7 @@ static Qiniu_Error Qiniu_Rio_Mkfile(
 	if (extra->mimeType != NULL) {
 		Qiniu_Buffer_AppendFormat(&url, "/mimeType/%S", extra->mimeType);
 	}
-	
+
 	// if (extra->customMeta != NULL) {
 	// 	Qiniu_Buffer_AppendFormat(&url, "/meta/%S", extra->customMeta);
 	// }
@@ -438,7 +438,7 @@ static Qiniu_Error Qiniu_Rio_Mkfile(
 	if (err.code == 200) {
 		if (extra->callbackRetParser != NULL) {
 			err = (*extra->callbackRetParser)(extra->callbackRet, root);
-		} else {
+		} else if (ret != NULL) {
 			ret->hash = Qiniu_Json_GetString(root, "hash", NULL);
 			ret->key = Qiniu_Json_GetString(root, "key", NULL);
 		}
@@ -485,7 +485,7 @@ static Qiniu_Error Qiniu_Rio_Mkfile2(
 	Qiniu_Buffer_Cleanup(&url);
 	Qiniu_Buffer_Cleanup(&body);
 
-	if (err.code == 200) {
+	if (err.code == 200 && ret != NULL) {
 		ret->hash = Qiniu_Json_GetString(root, "hash", NULL);
 		ret->key = Qiniu_Json_GetString(root, "key", NULL);
 	}
